@@ -4,21 +4,15 @@ metadata:
   name: pubsub
   namespace: dapr-trafficcontrol
 spec:
-  type: pubsub.rabbitmq
+  type: pubsub.azure.servicebus
   version: v1
   metadata:
-  - name: host
-    value: "amqp://localhost:5672"
-  - name: durable
-    value: "false"
-  - name: deletedWhenUnused
-    value: "false"
-  - name: autoAck
-    value: "false"
-  - name: reconnectWait
-    value: "0"
-  - name: concurrency
-    value: parallel
+  - name: connectionString
+    secretKeyRef:
+      name: pubsub.sbConnectionString
+      key: pubsub.sbConnectionString
+auth:
+  secretStore: trafficcontrol-secrets
 scopes:
   - trafficcontrolservice
   - finecollectionservice
