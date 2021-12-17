@@ -2,7 +2,7 @@
 param location string
 @description('A string that will be prepended to all resource names')
 param prefix string
-
+param timestamp string = utcNow()
 
 var rgName = '${prefix}-adventures-in-dapr'
 var serviceBusNamespace = '${prefix}-aind-namespace'
@@ -17,7 +17,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 module components 'components.bicep' = {
-  name: 'aind-components-deploy'
+  name: 'aind-components-deploy-${timestamp}'
   scope: resourceGroup(rg.name)
   params: {
     location: location
