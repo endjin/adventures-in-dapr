@@ -9,20 +9,7 @@ try {
     & .\stop-all.ps1 2>&1 | Out-Null
     & .\start-all.ps1 2>&1 | Out-Null
 
-    # wait for rabbit-mq
-    Write-Host "Waiting for RabbitMQ to become ready..."
-    $rabbitReady = $false
-    while (!$rabbitReady) {
-        $isReady = & docker logs dtc-rabbitmq | Select-String "Server startup complete"
-        if (!$isReady) {
-            Start-Sleep -Seconds 10
-        }
-        else {
-            $rabbitReady = $true
-        }
-    }
-
-    # Terminate any existing service instances
+    # Terminate any existing services
     Get-Process |
         Where-Object { $_.ProcessName -match "pwsh" } | 
         Select-Object Id,CommandLine | 
