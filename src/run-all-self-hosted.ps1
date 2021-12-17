@@ -1,3 +1,4 @@
+#Requires -PSEdition Core
 $here = Split-Path -Parent $PSCommandPath
 
 Push-Location $here/Infrastructure
@@ -21,23 +22,30 @@ try {
         }
     }
 
+    # Terminate any existing service instances
+    Get-Process |
+        Where-Object { $_.ProcessName -match "pwsh" } | 
+        Select-Object Id,CommandLine | 
+        Where-Object { $_.CommandLine -imatch "pwsh.*-noprofile -c .*/start-selfhosted.ps1" } |
+        ForEach-Object { Stop-Process -Force $_.Id; Start-Sleep -Seconds 5 }
+
     # Start the vehicle registration service
     Write-Host "Starting Vehicle Registration Service"
     cd $here/VehicleRegistrationService
     dapr stop vehicleregistrationservice 2>&1 | Out-Null
-    & cmd.exe --% /c start "VRS" pwsh.exe -noexit -noprofile -f ./start-selfhosted.ps1
+    Start-Process -FilePath pwsh -ArgumentList @("-noprofile", '-c & { $host.ui.RawUI.WindowTitle=\"VRS\"; ./start-selfhosted.ps1 }')
 
     # Start the fine collection service
     Write-Host "Starting Fine Collection Service"
     cd $here/FineCollectionService
     dapr stop finecollectionservice 2>&1 | Out-Null
-    & cmd.exe --% /c start "FCS" pwsh.exe -noexit -noprofile -f ./start-selfhosted.ps1
+    Start-Process -FilePath pwsh -ArgumentList @("-noprofile", '-c & { $host.ui.RawUI.WindowTitle=\"FCS\"; ./start-selfhosted.ps1 }')
 
     # Start the traffic control service
     Write-Host "Starting Traffic Control Service"
     cd $here/TrafficControlService
     dapr stop trafficcontrolservice 2>&1 | Out-Null
-    & cmd.exe --% /c start "TCS" pwsh.exe -noexit -noprofile -f ./start-selfhosted.ps1
+    Start-Process -FilePath pwsh -ArgumentList @("-noprofile", '-c & { $host.ui.RawUI.WindowTitle=\"TCS\"; ./start-selfhosted.ps1 }')
 }
 finally {
     Pop-Location
