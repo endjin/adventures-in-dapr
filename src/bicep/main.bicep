@@ -2,10 +2,16 @@
 param location string
 @description('A string that will be prepended to all resource names')
 param prefix string
+@description('The key vault secret name containing the service bus connection string')
+param serviceBusConnectionStringSecretName string = 'ServiceBus-ConnectionString'
+@description('The ObjectId of the service principal that will be granted key vault access')
+param keyVaultAccessObjectId string
 param timestamp string = utcNow()
+
 
 var rgName = '${prefix}-adventures-in-dapr'
 var serviceBusNamespace = '${prefix}-aind-namespace'
+var keyVaultName = '${prefix}aindkv'
 
 
 targetScope = 'subscription'
@@ -22,10 +28,13 @@ module components 'components.bicep' = {
   params: {
     location: location
     serviceBusNamespace: serviceBusNamespace
+    keyVaultName: keyVaultName
+    keyVaultAccessObjectId: keyVaultAccessObjectId
+    serviceBusConnectionStringSecretName: serviceBusConnectionStringSecretName
   }
 }
 
 
-output servicebus_connection_string string = components.outputs.servicebus_connection_string
-
-
+output keyVaultName string = components.outputs.keyVaultName
+output keyVaultSecretName string = serviceBusConnectionStringSecretName
+output serviceBusConnectionStringSecretUri string = components.outputs.serviceBusConnectionStringSecretUri
