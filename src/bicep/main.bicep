@@ -2,8 +2,6 @@
 param location string
 @description('A string that will be prepended to all resource names')
 param prefix string
-@description('The key vault secret name containing the service bus connection string')
-param serviceBusConnectionStringSecretName string = 'ServiceBus-ConnectionString'
 @description('The ObjectId of the service principal that will be granted key vault access')
 param keyVaultAccessObjectId string
 param timestamp string = utcNow()
@@ -12,6 +10,7 @@ param timestamp string = utcNow()
 var rgName = '${prefix}-adventures-in-dapr'
 var serviceBusNamespace = '${prefix}-aind-namespace'
 var keyVaultName = '${prefix}aindkv'
+var serviceBusConnectionStringSecretName = 'ServiceBus-ConnectionString'
 
 
 targetScope = 'subscription'

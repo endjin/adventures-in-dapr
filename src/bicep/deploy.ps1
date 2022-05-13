@@ -1,3 +1,5 @@
+#Requires -Modules @{ ModuleName="Az.Resources"; ModuleVersion="5.1.0" }
+
 [CmdletBinding(SupportsShouldProcess)]
 param (
     [Parameter(Mandatory=$true)]
@@ -30,11 +32,11 @@ if ([string]::IsNullOrEmpty($env:AZURE_CLIENT_SECRET)) {
     }
     else {
         $newSpCred = $servicePrincipal | New-AzADServicePrincipalCredential -EndDate ([datetime]::Now.AddMinutes(60))
-        $env:AZURE_CLIENT_SECRET = $newSpCred.Secret | ConvertFrom-SecureString -AsPlainText
+        $env:AZURE_CLIENT_SECRET = $newSpCred.SecretText
     }
-    $env:AZURE_CLIENT_ID = $servicePrincipal.ApplicationId
+    $env:AZURE_CLIENT_ID = $servicePrincipal.appId
     $env:AZURE_TENANT_ID = $tenantId
-    $env:AZURE_CLIENT_OBJECTID = $servicePrincipal.Id
+    $env:AZURE_CLIENT_OBJECTID = $servicePrincipal.id
 }
 
 $timestamp = Get-Date -f yyyyMMddTHHmmssZ
