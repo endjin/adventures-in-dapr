@@ -4,14 +4,18 @@ metadata:
   name: entrycam
   namespace: dapr-trafficcontrol
 spec:
-  type: bindings.mqtt
+  type: bindings.azure.storagequeues
   version: v1
   metadata:
-  - name: url
-    value: mqtt://localhost:1883
-  - name: topic
-    value: trafficcontrol/entrycam
-  - name: consumerID
-    value: "{uuid}"
+  - name: storageAccount
+    value: <storage-account-name>
+  - name: storageAccessKey
+    secretKeyRef:
+      name: StorageQueue-AccessKey
+  - name: queue
+    value: entrycam
+auth:
+  secretStore: trafficcontrol-secrets-kv
 scopes:
   - trafficcontrolservice
+  - simulation
