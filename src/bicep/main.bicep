@@ -11,6 +11,10 @@ var rgName = '${prefix}-adventures-in-dapr'
 var serviceBusNamespace = '${prefix}-aind-namespace'
 var keyVaultName = '${prefix}aindkv'
 var serviceBusConnectionStringSecretName = 'ServiceBus-ConnectionString'
+var storageAccountName = '${prefix}storage'
+var entryCamQueueName = 'entrycam'
+var exitCamQueueName = 'exitcam'
+var storageAccountAccessKeySecretName = 'StorageQueue-AccessKey'
 
 
 targetScope = 'subscription'
@@ -30,10 +34,16 @@ module components 'components.bicep' = {
     keyVaultName: keyVaultName
     keyVaultAccessObjectId: keyVaultAccessObjectId
     serviceBusConnectionStringSecretName: serviceBusConnectionStringSecretName
+    storageAccountName: storageAccountName
+    entryCamQueueName: entryCamQueueName
+    exitCamQueueName: exitCamQueueName
+    storageAccountAccessKeySecretName: storageAccountAccessKeySecretName
   }
 }
 
 
 output keyVaultName string = components.outputs.keyVaultName
-output keyVaultSecretName string = serviceBusConnectionStringSecretName
+output serviceBusConnectionStringSecretName string = serviceBusConnectionStringSecretName
+output storageAccountAccessKeySecretName string = storageAccountAccessKeySecretName
 output serviceBusConnectionStringSecretUri string = components.outputs.serviceBusConnectionStringSecretUri
+output storageAccountAccessKeySecretUri string = components.outputs.storageAccountAccessKeySecretUri
