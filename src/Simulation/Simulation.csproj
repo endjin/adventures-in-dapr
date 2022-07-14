@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapr.Client" Version="1.8.0" />
     <PackageReference Include="System.Net.Mqtt" Version="0.6.16-beta" />
   </ItemGroup>
 
