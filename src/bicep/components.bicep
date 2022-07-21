@@ -51,7 +51,7 @@ resource connection_string_secret 'Microsoft.KeyVault/vaults/secrets@2021-11-01-
   parent: keyvault
   properties: {
     contentType: 'text/plain'
-    value: listKeys(servicebus_authrule.id, servicebus_authrule.apiVersion).primaryConnectionString
+    value: servicebus_authrule.listKeys().primaryConnectionString
   }
 }
 
@@ -84,7 +84,7 @@ resource storage_access_key_secret 'Microsoft.KeyVault/vaults/secrets@2021-11-01
   parent: keyvault
   properties: {
     contentType: 'text/plain'
-    value: listKeys(storage_account.id, storage_account.apiVersion).keys[0].value
+    value: storage_account.listKeys().keys[0].value
   }
 }
 
