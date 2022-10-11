@@ -4,26 +4,26 @@ services:
   trafficcontrolservice:
     image: ${DOCKER_REGISTRY-}trafficcontrolservice
     build:
-      context: .
-      dockerfile: TrafficControlService/Dockerfile
+      context: ./TrafficControlService
+      dockerfile: dockerfile
 
   vehicleregistrationservice:
     image: ${DOCKER_REGISTRY-}vehicleregistrationservice
     build:
-      context: .
-      dockerfile: VehicleRegistrationService/Dockerfile
+      context: ./VehicleRegistrationService
+      dockerfile: Dockerfile
 
 
   finecollectionservice:
     image: ${DOCKER_REGISTRY-}finecollectionservice
     build:
-      context: .
-      dockerfile: FineCollectionService/Dockerfile
+      context: ./FineCollectionService
+      dockerfile: Dockerfile
 
 
   simulation:
     image: ${DOCKER_REGISTRY-}simulation
     build:
-      context: .
-      dockerfile: Simulation/Dockerfile
+      context: ./Simulation
+      dockerfile: dockerfile
 
