@@ -5,12 +5,16 @@
     <LangVersion>10</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>e5365010-58d6-47b3-8f39-a0d94db4ad31</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapr.AspNetCore" Version="1.5.0" />
     <PackageReference Include="Dapr.Actors" Version="1.5.0" />
     <PackageReference Include="Dapr.Actors.AspNetCore" Version="1.5.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
   </ItemGroup>
 
 </Project>

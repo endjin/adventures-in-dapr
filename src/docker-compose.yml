@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  trafficcontrolservice:
+    image: ${DOCKER_REGISTRY-}trafficcontrolservice
+    build:
+      context: .
+      dockerfile: TrafficControlService/Dockerfile
+
+  vehicleregistrationservice:
+    image: ${DOCKER_REGISTRY-}vehicleregistrationservice
+    build:
+      context: .
+      dockerfile: VehicleRegistrationService/Dockerfile
+
+
+  finecollectionservice:
+    image: ${DOCKER_REGISTRY-}finecollectionservice
+    build:
+      context: .
+      dockerfile: FineCollectionService/Dockerfile
+
+
+  simulation:
+    image: ${DOCKER_REGISTRY-}simulation
+    build:
+      context: .
+      dockerfile: Simulation/Dockerfile
+
