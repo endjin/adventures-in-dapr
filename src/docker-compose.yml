@@ -2,6 +2,9 @@ version: '3.4'
 
 services:
 
+  #
+  # Dapr runtime & infrastructure services
+  #
   dtc-redis:
     image: redis:6-alpine
 
@@ -22,6 +25,13 @@ services:
     image: "daprio/dapr"
     command: ["./placement", "-port", "50000"]
 
+  dapr-config:
+    build:
+      context: ./dapr
+
+  #
+  # Application services
+  #
   trafficcontrolservice:
     image: ${DOCKER_REGISTRY-}trafficcontrolservice
     build:
@@ -34,13 +44,11 @@ services:
       context: ./VehicleRegistrationService
       dockerfile: Dockerfile
 
-
   finecollectionservice:
     image: ${DOCKER_REGISTRY-}finecollectionservice
     build:
       context: ./FineCollectionService
       dockerfile: Dockerfile
-
 
   simulation:
     image: ${DOCKER_REGISTRY-}simulation
