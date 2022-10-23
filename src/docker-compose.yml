@@ -1,6 +1,27 @@
 version: '3.4'
 
 services:
+
+  dtc-redis:
+    image: redis:6-alpine
+
+  dtc-maildev:
+    image: maildev/maildev:latest
+    environment:
+      - MAILDEV_SMTP_PORT=25
+      - MAILDEV_WEB_PORT=80
+    ports:
+      - "4000:80"   # allows us to access the web console
+
+  dtc-zipkin:
+    image: openzipkin/zipkin-slim
+    ports:
+      - "19411:9411"  # allows us to access the web console
+
+  dapr-placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50000"]
+
   trafficcontrolservice:
     image: ${DOCKER_REGISTRY-}trafficcontrolservice
     build:
