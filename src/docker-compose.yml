@@ -56,3 +56,88 @@ services:
       context: ./Simulation
       dockerfile: dockerfile
 
+  #
+  # Dapr sidecars
+  #
+  trafficcontrolservice-dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "-app-id", "trafficcontrolservice",
+      "-app-port", "6000",
+      "-placement-host-address", "dapr-placement:50000", # Dapr's placement service can be reached via the docker DNS entry
+      "-dapr-http-port", "3600",
+      "-dapr-grpc-port", "60000",
+      "-components-path", "/components",
+      "-config", "/config/config.yaml"
+    ]
+    environment:
+    - AZURE_TENANT_ID=${AZURE_TENANT_ID}
+    - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+    - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
+    volumes_from:
+      - dapr-config
+    depends_on:
+      - trafficcontrolservice
+    network_mode: "service:trafficcontrolservice"       # Attach the sidecar to the partner service's network namespace
+
+  vehicleregistrationservice-dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "-app-id", "vehicleregistrationservice",
+      "-app-port", "6002",
+      "-placement-host-address", "dapr-placement:50000",
+      "-dapr-http-port", "3602",
+      "-dapr-grpc-port", "60002",
+      "-components-path", "/components",
+      "-config", "/config/config.yaml"
+    ]   
+    volumes_from:
+      - dapr-config
+    depends_on:
+      - vehicleregistrationservice
+    network_mode: "service:vehicleregistrationservice"
+
+  finecollectionservice-dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "-app-id", "finecollectionservice",
+      "-app-port", "6001",
+      "-placement-host-address", "dapr-placement:50000",
+      "-dapr-http-port", "3601",
+      "-dapr-grpc-port", "60001",
+      "-components-path", "/components",
+      "-config", "/config/config.yaml"
+    ]   
+    environment:
+    - AZURE_TENANT_ID=${AZURE_TENANT_ID}
+    - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+    - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
+    volumes_from:
+      - dapr-config
+    depends_on:
+      - finecollectionservice
+    network_mode: "service:finecollectionservice"
+
+  simulation-dapr:
+    image: "daprio/daprd:edge"
+    command: [
+      "./daprd",
+      "-app-id", "simulation",
+      "-placement-host-address", "dapr-placement:50000",
+      "-dapr-http-port", "3603",
+      "-dapr-grpc-port", "60003",
+      "-components-path", "/components",
+      "-config", "/config/config.yaml"
+    ]
+    environment:
+    - AZURE_TENANT_ID=${AZURE_TENANT_ID}
+    - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+    - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
+    volumes_from:
+      - dapr-config
+    depends_on:
+      - simulation
+    network_mode: "service:simulation"
