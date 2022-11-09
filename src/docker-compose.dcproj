@@ -5,8 +5,8 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>b4fff5e2-7bbb-405f-98dd-55e0e9bf9b37</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/weatherforecast</DockerServiceUrl>
-    <DockerServiceName>trafficcontrolservice</DockerServiceName>
+    <DockerServiceUrl>http://localhost:4000</DockerServiceUrl>
+    <DockerServiceName>dtc-maildev</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
