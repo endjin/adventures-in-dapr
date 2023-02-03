@@ -20,7 +20,8 @@ public class CollectionController : ControllerBase
         // set finecalculator component license-key
         if (_fineCalculatorLicenseKey == null)
         {
-            bool runningInK8s = Convert.ToBoolean(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") ?? "false");
+            // NOTE: Use the 'DOTNET_RUNNING_IN_CONTAINER' environment variable if we need to detect when generally running in a container
+            bool runningInK8s = Convert.ToBoolean(Environment.GetEnvironmentVariable("KUBERNETES_SERVICE_HOST") ?? "false");
             var metadata = new Dictionary<string, string> { { "namespace", "dapr-trafficcontrol" } };
             if (runningInK8s)
             {

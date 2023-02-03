@@ -8,7 +8,12 @@ public class DaprTrafficControlService : ITrafficControlService
 
     public DaprTrafficControlService(int camNumber)
     {
-        _client = new DaprClientBuilder().Build();
+        var daprHttpPort = Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? "3603";
+        var daprGrpcPort = Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? "60003";
+        _client = new DaprClientBuilder()
+                        .UseHttpEndpoint($"http://localhost:{daprHttpPort}")
+                        .UseGrpcEndpoint($"http://localhost:{daprGrpcPort}")
+                        .Build();
     }
 
     public async Task SendVehicleEntryAsync(VehicleRegistered vehicleRegistered)
