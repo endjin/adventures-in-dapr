@@ -1,0 +1,17 @@
+apiVersion: ignite.weave.works/v1alpha4
+kind: VM
+metadata:
+  name: aind-vrs
+spec:
+  cpus: 1
+  memory: 512MB
+  diskSize: 1GB
+  image:
+    oci: jd4wson/aind-ignite-vrs:0.10
+  network:
+    ports:
+    - hostPort: 80
+      vmPort: 6002
+      bindAddress: 0.0.0.0
+      protocol: tcp
+  ssh: true

@@ -5,9 +5,12 @@
     <LangVersion>10</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>34e9b8ea-0693-4769-a565-7943d0e8cf1e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' != 'Release'">
+    <UserSecretsId>34e9b8ea-0693-4769-a565-7943d0e8cf1e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

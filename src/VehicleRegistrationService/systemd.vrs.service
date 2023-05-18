@@ -1,0 +1,18 @@
+[Unit]
+Description=Vehicle Registration Service
+After=network.target
+
+[Service]
+#Type=notify
+ExecStart=/usr/bin/dotnet /app/VehicleRegistrationService.dll
+SyslogIdentifier=AIND-VRS
+
+Restart=always
+RestartSec=5
+
+Environment="ASPNETCORE_URLS=http://*:6002"
+Environment="ASPNETCORE_ENVIRONMENT=Development"
+#Environment="DOTNET_USER_SECRETS_FALLBACK_DIR=/app/.secrets"
+
+[Install]
+WantedBy=multi-user.target

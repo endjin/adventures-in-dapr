@@ -1,0 +1,22 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build-env
+WORKDIR /app
+
+# Copy necessary files and restore as distinct layer
+COPY VehicleRegistrationService.csproj ./
+RUN dotnet restore
+
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out VehicleRegistrationService.csproj
+
+# Build runtime image
+FROM firecracker-aspnet:6
+WORKDIR /app
+COPY --from=build-env /app/out .
+# RUN mkdir .secrets
+
+COPY systemd.vrs.service vrs.service
+RUN chmod 644 vrs.service \
+        && ln -s /app/vrs.service /etc/systemd/system/vrs.service \
+        && systemctl enable vrs
+
