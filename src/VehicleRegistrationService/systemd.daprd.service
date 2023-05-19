@@ -1,0 +1,13 @@
+[Unit]
+Description=Dapr Runtime
+After=vrs.service
+
+[Service]
+ExecStart=/dapr/daprd -app-id vehicleregistrationservice -app-port 6002 -placement-host-address dapr-placement:50000 -dapr-http-port 3602 -dapr-grpc-port 60002 -components-path /dapr/components -config /dapr/config/config.yaml
+SyslogIdentifier=AIND-VRS-DAPRD
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

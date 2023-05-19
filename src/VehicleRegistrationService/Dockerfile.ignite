@@ -9,14 +9,24 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out VehicleRegistrationService.csproj
 
+# Dapr runtime & config
+FROM aind-daprd:latest AS dapr
+
 # Build runtime image
 FROM firecracker-aspnet:6
+
+COPY --from=dapr daprd /dapr/
+COPY --from=dapr components /dapr/components
+COPY --from=dapr config/config.yaml /dapr/config/
+
 WORKDIR /app
 COPY --from=build-env /app/out .
-# RUN mkdir .secrets
 
 COPY systemd.vrs.service vrs.service
-RUN chmod 644 vrs.service \
+COPY systemd.daprd.service daprd.service
+RUN chmod 644 vrs.service daprd.service \
         && ln -s /app/vrs.service /etc/systemd/system/vrs.service \
-        && systemctl enable vrs
+        && ln -s /app/daprd.service /etc/systemd/system/daprd.service \
+        && systemctl enable vrs \
+        && systemctl enable daprd
 
